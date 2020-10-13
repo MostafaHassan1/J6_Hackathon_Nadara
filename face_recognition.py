@@ -6,14 +6,14 @@ def load_images(path_to_images):
     # takes the path of the students images to load them
     # returns a list of those images and the corresponding student's name
     images = []
-    students_name = []
+    students_names = []
     images_name = os.listdir(path_to_images)
 
     for image_name in images_name:
         images.append(face_recognition.load_image_file(f'{path_to_images}/{image_name}'))
         # to remove the image extension
-        students_name.append(os.path.splitext(image_name)[0])
-    return images, students_name
+        students_names.append(os.path.splitext(image_name)[0])
+    return images, students_names
 
 def encode_images(images):
     # takes the Student images we want to encode
@@ -26,5 +26,5 @@ def encode_images(images):
 
 
 path_to_images = "Resources/Student_images"
-images, students_name =load_images(path_to_images)
+images, students_names =load_images(path_to_images)
 encodings = encode_images(images)
