@@ -32,12 +32,11 @@ def encode_images(images):
     return encodings
 
 
-def face_recog(video: VideoCap, known_faces_encodings: list, students_names: list):
+def face_recog(frame, known_faces_encodings: list, students_names: list):
 
-    while not video.stopped:
         names = []
         # Resize frame of video to 1/4 size for faster face recognition processing
-        small_frame = cv2.resize(video.frame, (0, 0), fx=0.25, fy=0.25)
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
         rgb_small_frame = small_frame[:, :, ::-1]
 
@@ -54,7 +53,7 @@ def face_recog(video: VideoCap, known_faces_encodings: list, students_names: lis
             names.append(name)
         if len(names) == 0:
            names = ["No face is visible"]
-        video.names = names
+        return names
 
 # images, students_names = load_images(path_to_images)
 # encodings = encode_images(images)
