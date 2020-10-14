@@ -2,6 +2,8 @@ import os
 import cv2
 import face_recognition
 
+import VideoCap
+
 
 def load_images():
     """takes the path of the students images to load them
@@ -30,28 +32,30 @@ def encode_images(images):
     return encodings
 
 
-def face_recog(frame,known_faces_encodings: list, students_names: list):
-    # Resize frame of video to 1/4 size for faster face recognition processing
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-    # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-    rgb_small_frame = small_frame[:, :, ::-1]
+def face_recog(video: VideoCap, known_faces_encodings: list, students_names: list):
 
-    rgb_small_frame = face_recognition.load_image_file(rgb_small_frame)
-    faces_encodings = face_recognition.face_encodings(rgb_small_frame)
-    for unknown_face_encoding in faces_encodings:
-        # See if the face is a match for the known face(s)
-        matches = face_recognition.compare_faces(known_faces_encodings, unknown_face_encoding)
-        name = "Unknown"
+    while not video.stopped:
+        names = []
+        # Resize frame of video to 1/4 size for faster face recognition processing
+        small_frame = cv2.resize(video.frame, (0, 0), fx=0.25, fy=0.25)
+        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+        rgb_small_frame = small_frame[:, :, ::-1]
 
-        # If a match was found in known_face_encodings, just use the first one.
-        if True in matches:
-            first_match_index = matches.index(True)
-            name = students_names[first_match_index]
+        faces_encodings = face_recognition.face_encodings(rgb_small_frame)
+        for unknown_face_encoding in faces_encodings:
+            # See if the face is a match for the known face(s)
+            matches = face_recognition.compare_faces(known_faces_encodings, unknown_face_encoding)
+            name = "Unknown"
 
-    return name
+            # If a match was found in known_face_encodings, just use the first one.
+            if True in matches:
+                first_match_index = matches.index(True)
+                name = students_names[first_match_index]
+            names.append(name)
+        if len(names) == 0:
+           names = ["No face is visible"]
+        video.names = names
 
-
-
-#images, students_names = load_images(path_to_images)
-#encodings = encode_images(images)
-#face_recog(encodings, students_names)
+# images, students_names = load_images(path_to_images)
+# encodings = encode_images(images)
+# face_recog(encodings, students_names)
