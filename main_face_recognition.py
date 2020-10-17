@@ -2,13 +2,12 @@ import os
 import cv2
 import face_recognition
 
-import VideoCap
-
 
 def load_images():
-    """takes the path of the students images to load them
+    """
      returns a list of those images and the corresponding student's name
      """
+    # change this path to any path you have pictures in it 
     path_to_images = "Resources/Student_images"
     images = []
     students_names = []
@@ -22,8 +21,9 @@ def load_images():
 
 
 def encode_images(images):
-    """ takes the Student images we want to encode
-     returns the encodings
+    """
+    takes the Students images we want to encode
+    returns the encodings
     """
     encodings = []
     for img in images:
@@ -51,10 +51,14 @@ def face_recog(frame, known_faces_encodings: list, students_names: list):
                 first_match_index = matches.index(True)
                 name = students_names[first_match_index]
             names.append(name)
+
         if len(names) == 0:
            names = ["No face is visible"]
+
         return names
 
-# images, students_names = load_images(path_to_images)
-# encodings = encode_images(images)
+# if you want to see the encodings just remove the first 3 comments
+#images, students_names = load_images()
+#encodings = encode_images(images)
+#print(encodings)
 # face_recog(encodings, students_names)
