@@ -5,7 +5,7 @@ from pymysql.constants import CLIENT
 # Database Connection Configuration
 HOST = 'localhost'
 USER = 'root'
-PASSWORD = ''
+PASSWORD = 'My.Birth@171998'
 CHARSET = 'utf8mb4'
 DBNAME = 'j6_hackathon'
 PORT = 3306
@@ -25,44 +25,24 @@ def createDatabase():
     )
 
     # SQL Statement to create a database
-    sql = """-- MySQL Workbench Forward Engineering
+    sql = """
+    DROP SCHEMA IF EXISTS `{}` ;
 
-    SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-    SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-    SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
-    -- -----------------------------------------------------
-    -- Schema {DBNAME}
-    -- -----------------------------------------------------
-    DROP SCHEMA IF EXISTS `{DBNAME}` ;
-
-    -- -----------------------------------------------------
-    -- Schema {DBNAME}
-    -- -----------------------------------------------------
-    CREATE SCHEMA IF NOT EXISTS `{DBNAME}` DEFAULT CHARACTER SET utf8 ;
+    CREATE SCHEMA IF NOT EXISTS `{}` DEFAULT CHARACTER SET utf8 ;
     SHOW WARNINGS;
-    USE `{DBNAME}` ;
+    USE `{}` ;
 
-    -- -----------------------------------------------------
-    -- Table `{DBNAME}`.`people_faces_datasets`
-    -- -----------------------------------------------------
-    DROP TABLE IF EXISTS `{DBNAME}`.`people_faces_datasets` ;
+    DROP TABLE IF EXISTS `{}`.`people_faces_datasets` ;
 
     SHOW WARNINGS;
-    CREATE TABLE IF NOT EXISTS `{DBNAME}`.`people_faces_datasets` (
+    CREATE TABLE IF NOT EXISTS `{}`.`people_faces_datasets` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `name` NVARCHAR(255) NOT NULL,
     `dataset` TEXT NOT NULL,
     PRIMARY KEY (`id`))
     ENGINE = InnoDB;
-
-    SHOW WARNINGS;
-
-    SET SQL_MODE=@OLD_SQL_MODE;
-    SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-    SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-    """
+    """.format(DBNAME, DBNAME, DBNAME, DBNAME, DBNAME)
+    sql = sql.replace("\n", "")
     try:
         # Create a cursor object
         with conn.cursor() as cursor:
