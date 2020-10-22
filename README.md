@@ -9,41 +9,43 @@
 
 # Problem Statement 
 
-Define problem statement (not more than 250 words).
-
-For Example: Voice recognition applications are designed to facilitate the usage of various technologies such as smartphones for instance. However, this technology is not suitable for all members of our community. Hearing impaired individuals, for explample, can not use voice recognition to manipulate a device from a certain distance. Therefore, we like to apply object recognition to tackle this issue. With our applictaion, we want to explore in how far sign language can be used to maniupulate technologies that are used in everday life. 
-
+Online Examination Application with face recognition to detect cheating by false identity or group attendance,
+ and also using eye tracking to try to detect if someone is looking to the far right or left for reading something not on the computer he/she using   
 # Solution
 
 * Steps taken for solving the problem.
-* Frameworks/Tools/Technologies stacks used.
-* Give insights into why you chose the particular technology. Therefore, please elaborate on the assumptions you made and explain the constraints of the used technology.
+  - For face recognition
+    - We take a picture of the student to encode and add it to our database so we can recognize him
+    - In the live video we take the student face and encode it 
+    - we compare his encoding to the rest of the encodings to see if there is a match
+    - For performance wise, the face recognition and encodings only works every 60 frame (~1sec) 
+  - For group attendance
+    - We detect how many faces in the live feed 
+    - If there is more than one we show a cheater detected image
+    - For performance wise, the face recognition and encodings only works every 30 frame (~500ms) 
 
+  - For eye tracking (Not very high accuracy)
+    - We first detect the eyes by using the dlib 68-face-points model detector 
+    - use a threshold to detect the eyes' pupil 
+    - use dilation, erosion and median blur to make the contour bigger and clearer
+    - using blob area calculation to detect the center of the blob shape of the eyes
+    - We check if the center is close to the 68-face-points that corresponds to the eyes left or right boundaries
+    - If it's close, then the student is cheating by looking away from the screen
+    
+* We used python with openCV, dlib and face-recognition libraries  
+* For why we chose those libraries 
+    - openCV is fast, well documented and has a huge community behind it
+    - dlib has pretrained models that is fast and have a huge accuracy (our face recognition accuracy is 98%)
+    - face-recognition is built on top of dlib and uses the same models but with more simplified functions and less code  
 # Methodology 
 
-Explain the following in detail:
-  * Explain the architecture of your project. To visualise your architecture, you might provide a flow chart, wireframes or any other graphical representation. 
-  * Explain which datasets you used in the project. 
-  * Explain which machine learning models you used.
-  * Performance metrics: Highlight how well your application performs. For example, you should state the accuracy, loss , etc.
-
+  * The architature of the project is simple we only have a single table database that holds the image's encode and person name
+  * We didn't use any dataset since we have a pretrained models
+  * The dlib face recognition model that we used has 98% accuracy 
 # System Architecture proposal (if any)
 
-Explain the following in detail:
-  * Explain which hardwares are used in the project and how the interaction between them is established. 
-  * Explain how your architecture works by using for example ER diagram, data flow diagram or integration proposal. You might explain how the connection between different modules is established.
-
-
-# Working Prototype
-
-* Attach link of working prototype video here in the markdown.
-
-# Screenshots, if needed
-
-* Attach relevant screenshots, if needed. 
+  * We used a standard laptop camera with openCV to open the camera and take the drames. 
 
 # Steps to run the software
 
-* Explain in detail how one can run your software and what steps are needed to do so.
-* Explain what libraries need to be installed.
-* Explain how to setup an executable environment.
+* we first need to install openCV, c++ compiler, cmake c++, cmake python, dlib, face-recognition (the order is important)
