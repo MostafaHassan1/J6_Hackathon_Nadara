@@ -48,6 +48,10 @@ Online Examination Application with face recognition to detect cheating by false
 
 # Steps to run the software
 
-* We first need to install openCV, c++ compiler, cmake c++, cmake python, dlib, face-recognition (the order is important)
+* We first need to install python, c++ compiler, cmake c++ tools
+
+* Python Libs: cmake, dlib, face-recognition (the order is important), and pymysql for the database
 
 * For simplicity we are not using the database, if you want you can just run the code but have your student image in a dict : Resources/Students_images (or change that path in main_face_recognition.py load_images function)
+
+* to run the face recognition run main.py, for eye tracking run eyeTracking.py

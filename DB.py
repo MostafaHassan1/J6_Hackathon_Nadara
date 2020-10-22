@@ -5,9 +5,9 @@ from pymysql.constants import CLIENT
 # Database Connection Configuration
 HOST = 'localhost'
 USER = 'root'
-PASSWORD = 'My.Birth@171998'
+PASSWORD = ''
 CHARSET = 'utf8mb4'
-DBNAME = 'j6_hackathon'
+DBNAME = 'Nadara_j6_hackathon'
 PORT = 3306
 
 
