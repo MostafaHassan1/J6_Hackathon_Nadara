@@ -42,7 +42,7 @@ Online Examination Application with face recognition to detect cheating by false
   * The architature of the project is simple we only have a single table database that holds the image's encode and person name
   * We didn't use any dataset since we have a pretrained models
   * The dlib face recognition model that we used has 98% accuracy 
-# System Architecture proposal (if any)
+# System Architecture proposal
 
   * We used a standard laptop camera with openCV to open the camera and take the drames. 
 
