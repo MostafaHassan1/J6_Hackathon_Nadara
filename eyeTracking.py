@@ -55,10 +55,10 @@ def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center, img):
     """
     try:
         diff_x = abs(x_left - x_right) / 4
-        print("diff ", diff_x)
-        print('left point coord: ' + str(x_left) + ',' + str(y_left))
-        print('right point coord: ' + str(x_right) + ',' + str(y_right))
-        print('center point coord: ' + str(x_center) + ',' + str(y_center))
+        # print("diff ", diff_x)
+        # print('left point coord: ' + str(x_left) + ',' + str(y_left))
+        # print('right point coord: ' + str(x_right) + ',' + str(y_right))
+        # print('center point coord: ' + str(x_center) + ',' + str(y_center))
         cv2.putText(img, 'left : ' + str(x_left) + "  center : " + str(x_center) + "  right : " + str(x_right),
                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
         img1 = cv2.imread('Resources/cheater.jpg')
