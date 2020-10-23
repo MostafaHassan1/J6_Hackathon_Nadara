@@ -78,7 +78,7 @@ def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center, img):
     and then checks if the center with the diff. is close to anyone of those points
     """
     try:
-        diff_x = abs(x_left - x_right) / 2.4
+        diff_x = abs(x_left - x_right) / 4
         print("diff ", diff_x)
         print('left point coord: ' + str(x_left) + ',' + str(y_left))
         print('right point coord: ' + str(x_right) + ',' + str(y_right))
@@ -107,10 +107,16 @@ right = [42, 43, 44, 45, 46, 47]  # keypoint indices for right eye
 
 cap = cv2.VideoCapture(0)
 ret, img = cap.read()
+thresh = img.copy()
 
 cv2.namedWindow('image')
 kernel = np.ones((20, 20), np.uint8)  # used for dilation of eyes in the mask
 process_frame = False
+
+def nothing(x):
+   pass
+cv2.createTrackbar('threshold', 'image', 0, 255, nothing)
+
 
 while (True):
     image2 = np.zeros((1000, 1000, 3), np.uint8)
@@ -137,7 +143,8 @@ while (True):
             eyes[mask] = [255, 255, 255]
             mid = (shape[42][0] + shape[39][0]) // 2
             eyes_gray = cv2.cvtColor(eyes, cv2.COLOR_BGR2GRAY)
-            threshold = 152
+            threshold = 67
+            # threshold = cv2.getTrackbarPos('threshold', 'image')
             _, thresh = cv2.threshold(eyes_gray, threshold, 255, cv2.THRESH_BINARY)
             thresh = cv2.erode(thresh, None, iterations=2)  # 1
             thresh = cv2.dilate(thresh, None, iterations=4)  # 2
@@ -174,10 +181,12 @@ while (True):
                                  img)
             except:
                 pass
+
         process_frame = False
     # show the image with the face detections + facial landmarks
 
-    # cv2.imshow('eyes', img)
+    #cv2.imshow('eyes', img)
+    #cv2.imshow("image", thresh)
     cv2.destroyWindow('image')
     cv2.destroyWindow('eyePoints')
 
