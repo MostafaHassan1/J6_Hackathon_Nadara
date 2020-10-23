@@ -69,7 +69,7 @@ def get_eye_ball_center(list, right=False, x=False):
 
 def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center,img):
     try:
-        diff_x= abs(x_left-x_right)/4
+        diff_x= abs(x_left-x_right)/2.4
         print("diff ", diff_x)
         print('left point coord: ' + str(x_left) +','+str(y_left))
         print('right point coord: ' + str(x_right)+','+ str(y_right))
