@@ -26,7 +26,7 @@ Online Examination Application with face recognition to detect cheating by false
 
   - For eye tracking (Not very high accuracy, because we are using a standard laptop camera)
     - We first detect the eyes by using the dlib 68-face-points model detector 
-    - Use a threshold to detect the eyes' pupil 
+    - Use a threshold trackbar until the eyes's pupil is the only white part in the image
     - Use dilation, erosion and median blur to make the contour bigger and clearer
     - Using blob area calculation to detect the center of the blob shape of the eyes
     - We check if the center is close to the 68-face-points that corresponds to the eyes left or right boundaries
@@ -35,7 +35,7 @@ Online Examination Application with face recognition to detect cheating by false
 * We used python with openCV, dlib and face-recognition libraries  
 * For why we chose those libraries 
     - openCV is fast, well documented and has a huge community behind it
-    - dlib has pretrained models that is fast and have a huge accuracy (our face recognition accuracy is 98%)
+    - dlib has pretrained models that is fast and has a huge accuracy (our face recognition accuracy is 98%)
     - face-recognition is built on top of dlib and uses the same models but with more simplified functions and less code  
 ## Methodology 
 
