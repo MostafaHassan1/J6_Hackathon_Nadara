@@ -143,8 +143,8 @@ while (True):
             eyes[mask] = [255, 255, 255]
             mid = (shape[42][0] + shape[39][0]) // 2
             eyes_gray = cv2.cvtColor(eyes, cv2.COLOR_BGR2GRAY)
-            threshold = 67
-            # threshold = cv2.getTrackbarPos('threshold', 'image')
+            # threshold = 67
+            threshold = cv2.getTrackbarPos('threshold', 'image')
             _, thresh = cv2.threshold(eyes_gray, threshold, 255, cv2.THRESH_BINARY)
             thresh = cv2.erode(thresh, None, iterations=2)  # 1
             thresh = cv2.dilate(thresh, None, iterations=4)  # 2
@@ -186,8 +186,8 @@ while (True):
     # show the image with the face detections + facial landmarks
 
     #cv2.imshow('eyes', img)
-    #cv2.imshow("image", thresh)
-    cv2.destroyWindow('image')
+    cv2.imshow("image", thresh)
+    # cv2.destroyWindow('image')
     cv2.destroyWindow('eyePoints')
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
