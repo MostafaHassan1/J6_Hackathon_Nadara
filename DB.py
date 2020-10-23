@@ -1,5 +1,6 @@
 import pymysql
 import json
+import numpy as np
 from pymysql.constants import CLIENT
 
 # Database Connection Configuration
@@ -124,7 +125,7 @@ def getAllPeople():
         print('Fetching Failed:\n', e)
 
     conn.close()
-
+    # list_of_datasets = np.asarray(list_of_datasets)
     return list_of_datasets, list_of_names
 
 def testInsertion():
