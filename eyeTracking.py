@@ -48,30 +48,6 @@ def contouring(thresh, mid, img, right=False):
         pass  # occurs when eyes are not detected
 
 
-def get_eye_ball_center(list, right=False, x=False):
-    coordinate = 0
-    if x:
-        c = 1
-    else:
-        c = 0
-
-    if right:
-        x = 42
-        while x <= 47:
-            coordinate += list[x][c]
-            x = x + 1
-
-    else:
-        x = 36
-        while x <= 41:
-            coordinate += list[x][c]
-            x = x + 1
-
-    coordinate = coordinate // 6
-
-    return coordinate
-
-
 def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center, img):
     """
     Detect if center of the eyes' pupil is looking to the far left or right by calculating the diff. between the left most and right most eye points
@@ -153,29 +129,12 @@ while (True):
             eyeLeft = contouring(thresh[:, 0:mid], mid, img)
             eyeRight = contouring(thresh[:, mid:], mid, img, True)
 
-            # Change one pixel draw left eye
-            image2[shape[36][1], shape[36][0]] = (200, 0, 200)
-            image2[shape[37][1], shape[37][0]] = (200, 0, 200)
-            image2[shape[38][1], shape[38][0]] = (200, 0, 200)
-            image2[shape[39][1], shape[39][0]] = (200, 0, 200)
-            image2[shape[40][1], shape[40][0]] = (200, 0, 200)
-            image2[shape[41][1], shape[41][0]] = (200, 0, 200)
-            image2[eyeLeft] = (255, 0, 0)
-
             try:
                 compare_eyeballs(shape[36][1], shape[36][0], shape[39][1], shape[39][0], eyeLeft[0], eyeLeft[1],
                                  img)
             except:
                 pass
 
-            # Change one pixel to draw right eye
-            image2[shape[42][1], shape[42][0]] = (200, 0, 200)
-            image2[shape[43][1], shape[43][0]] = (200, 0, 200)
-            image2[shape[44][1], shape[44][0]] = (200, 0, 200)
-            image2[shape[45][1], shape[45][0]] = (200, 0, 200)
-            image2[shape[46][1], shape[46][0]] = (200, 0, 200)
-            image2[shape[47][1], shape[47][0]] = (200, 0, 200)
-            image2[eyeRight] = (255, 0, 0)
             try:
                 compare_eyeballs(shape[42][1], shape[42][0], shape[45][1], shape[45][0], eyeRight[0], eyeRight[1],
                                  img)
@@ -183,7 +142,6 @@ while (True):
                 pass
 
         process_frame = False
-    # show the image with the face detections + facial landmarks
 
     #cv2.imshow('eyes', img)
     cv2.imshow("image", thresh)
