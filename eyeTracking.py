@@ -24,6 +24,15 @@ def eye_on_mask(mask, side):  # takes the image and the side which it will draw 
 
 
 def contouring(thresh, mid, img, right=False):
+    """
+    Used for finding the eye's pupil contour and the center of it
+    :param thresh: the img after using threshold, dilation, erosion and median blur
+    :param mid: the mid point between the two eyes
+                which can be added to the left eye center to get the right eye position before the cropping
+    :param img: the main img
+    :param right: flag to indicate that this is the right eye
+    :return: cx,cy the coord. of the pupil's center
+    """
     cnts, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     try:
         cnt = max(cnts, key=cv2.contourArea)  # finding contour with maximum area (eyeball)
@@ -37,7 +46,6 @@ def contouring(thresh, mid, img, right=False):
         return cy, cx
     except:
         pass  # occurs when eyes are not detected
-
 
 
 def get_eye_ball_center(list, right=False, x=False):
@@ -59,28 +67,30 @@ def get_eye_ball_center(list, right=False, x=False):
             coordinate += list[x][c]
             x = x + 1
 
-
     coordinate = coordinate // 6
 
     return coordinate
 
 
-
-
-def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center,img):
+def compare_eyeballs(y_left, x_left, y_right, x_right, y_center, x_center, img):
+    """
+    Detect if center of the eyes' pupil is looking to the far left or right by calculating the diff. between the left most and right most eye points
+    and then checks if the center with the diff. is close to anyone of those points
+    """
     try:
-        diff_x= abs(x_left-x_right)/2.4
+        diff_x = abs(x_left - x_right) / 2.4
         print("diff ", diff_x)
-        print('left point coord: ' + str(x_left) +','+str(y_left))
-        print('right point coord: ' + str(x_right)+','+ str(y_right))
-        print('center point coord: ' + str(x_center)+','+str(y_center))
-        cv2.putText(img,'left : '+str(x_left)+"  center : "+ str(x_center)+ "  right : "+str(x_right),(10,30),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),1)
+        print('left point coord: ' + str(x_left) + ',' + str(y_left))
+        print('right point coord: ' + str(x_right) + ',' + str(y_right))
+        print('center point coord: ' + str(x_center) + ',' + str(y_center))
+        cv2.putText(img, 'left : ' + str(x_left) + "  center : " + str(x_center) + "  right : " + str(x_right),
+                    (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
         img1 = cv2.imread('Resources/cheater.jpg')
         cv2.imshow("eyes", img)
-        if x_center-diff_x <= x_left:
+        if x_center - diff_x <= x_left:
             cv2.imshow('cheater image looking left', img1)
             cv2.waitKey(0)
-        elif x_center+diff_x >= x_right:
+        elif x_center + diff_x >= x_right:
             cv2.imshow('cheater image looking right', img1)
             cv2.waitKey(0)
         else:
@@ -101,7 +111,6 @@ ret, img = cap.read()
 cv2.namedWindow('image')
 kernel = np.ones((20, 20), np.uint8)  # used for dilation of eyes in the mask
 process_frame = False
-
 
 while (True):
     image2 = np.zeros((1000, 1000, 3), np.uint8)
@@ -134,8 +143,8 @@ while (True):
             thresh = cv2.dilate(thresh, None, iterations=4)  # 2
             thresh = cv2.medianBlur(thresh, 3)  # 3 smoothing the image
             thresh = cv2.bitwise_not(thresh)  # to find the eyeballs it need to be white and its background black
-            hmadaLeft = contouring(thresh[:, 0:mid], mid, img)
-            hmadaRight = contouring(thresh[:, mid:], mid, img, True)
+            eyeLeft = contouring(thresh[:, 0:mid], mid, img)
+            eyeRight = contouring(thresh[:, mid:], mid, img, True)
 
             # Change one pixel draw left eye
             image2[shape[36][1], shape[36][0]] = (200, 0, 200)
@@ -144,24 +153,25 @@ while (True):
             image2[shape[39][1], shape[39][0]] = (200, 0, 200)
             image2[shape[40][1], shape[40][0]] = (200, 0, 200)
             image2[shape[41][1], shape[41][0]] = (200, 0, 200)
-            image2[hmadaLeft] = (255, 0, 0)
+            image2[eyeLeft] = (255, 0, 0)
 
             try:
-                compare_eyeballs(shape[36][1], shape[36][0], shape[39][1], shape[39][0], hmadaLeft[0], hmadaLeft[1],img)
+                compare_eyeballs(shape[36][1], shape[36][0], shape[39][1], shape[39][0], eyeLeft[0], eyeLeft[1],
+                                 img)
             except:
-               pass
+                pass
 
-
-             # Change one pixel to draw right eye
+            # Change one pixel to draw right eye
             image2[shape[42][1], shape[42][0]] = (200, 0, 200)
             image2[shape[43][1], shape[43][0]] = (200, 0, 200)
             image2[shape[44][1], shape[44][0]] = (200, 0, 200)
             image2[shape[45][1], shape[45][0]] = (200, 0, 200)
             image2[shape[46][1], shape[46][0]] = (200, 0, 200)
             image2[shape[47][1], shape[47][0]] = (200, 0, 200)
-            image2[hmadaRight] = (255, 0, 0)
+            image2[eyeRight] = (255, 0, 0)
             try:
-                compare_eyeballs(shape[42][1], shape[42][0], shape[45][1], shape[45][0], hmadaRight[0], hmadaRight[1],img)
+                compare_eyeballs(shape[42][1], shape[42][0], shape[45][1], shape[45][0], eyeRight[0], eyeRight[1],
+                                 img)
             except:
                 pass
         process_frame = False
