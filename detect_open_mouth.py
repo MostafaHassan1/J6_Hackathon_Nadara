@@ -101,8 +101,8 @@ while True:
 		
 		cv2.drawContours(frame, [mouthHull], -1, (0, 255, 0), 1)
 		cv2.putText(frame, "MAR: {:.2f}".format(mar), (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
-		# MOUTH_AR_THRESH = cv2.getTrackbarPos('frame', 'image')
-		# MOUTH_AR_THRESH = MOUTH_AR_THRESH / 100
+		MOUTH_AR_THRESH = cv2.getTrackbarPos('frame', 'image')
+		MOUTH_AR_THRESH = MOUTH_AR_THRESH / 100
         # Draw text if mouth is open
 		if mar > MOUTH_AR_THRESH:
 			cv2.putText(frame, "Mouth is Open!", (30,60),
